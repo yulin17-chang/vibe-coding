@@ -23,6 +23,7 @@ const statusDiv = document.getElementById("status");
 const timerDiv = document.getElementById("timer");
 const scoreDiv = document.getElementById("score");
 const sendSound = document.getElementById("sendSound");
+const pourSound = document.getElementById("pourSound");
 
 // --- 難度選擇 ---
 difficultyDiv.querySelectorAll("button").forEach(btn => {
@@ -42,6 +43,7 @@ function init() {
   score = 0;
   playerSelection = [];
   juiceDiv.style.height = "0%";
+  submitBtn.style.display = "inline-block";
   submitBtn.disabled = false;
   nextOrder();
 }
@@ -120,14 +122,17 @@ cupDiv.ondragover = e => e.preventDefault();
 cupDiv.ondrop = e => {
   const ing = e.dataTransfer.getData("text");
   playerSelection.push(ing);
-  updateJuice();
+  pourSound.currentTime = 0;
+  pourSound.play();
+  updateJuiceAnimated();
   statusDiv.textContent = `目前選擇：${playerSelection.join(" + ")}`;
 };
 
-// --- 更新杯子果汁高度 ---
-function updateJuice() {
-  const percent = Math.min(100, (playerSelection.length / currentOrder.length) * 100);
-  juiceDiv.style.height = percent + "%";
+// --- 果汁動畫填滿 ---
+function updateJuiceAnimated() {
+  const targetPercent = Math.min(100, (playerSelection.length / currentOrder.length) * 100);
+  juiceDiv.style.transition = "height 0.5s ease-in-out";
+  juiceDiv.style.height = targetPercent + "%";
 }
 
 // --- 送出檢查 ---
@@ -174,7 +179,7 @@ function endGame(msg) {
   clearInterval(timer);
   orderDiv.innerHTML = "";
   ingredientsDiv.innerHTML = "";
-  submitBtn.disabled = true;
+  submitBtn.style.display = "none"; // 隱藏送出按鈕
   timerDiv.textContent = "";
   statusDiv.innerHTML = msg.replace(/\n/g,"<br>");
   scoreDiv.innerHTML = `<button onclick="restartGame()">再次遊玩</button>`;
@@ -187,6 +192,7 @@ window.restartGame = function() {
   scoreDiv.innerHTML = "";
   statusDiv.textContent = "";
   juiceDiv.style.height = "0%";
+  submitBtn.style.display = "inline-block";
 }
 
 });
