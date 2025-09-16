@@ -29,21 +29,20 @@ body {
   position: relative;
   cursor: pointer;
   overflow: hidden;
+  font-size: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .mole {
-  width: 80px;
-  height: 80px;
-  background: url("https://i.imgur.com/f1vBZY6.png") no-repeat center/contain;
   position: absolute;
-  bottom: -80px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: -50px; /* 初始隱藏 */
   transition: bottom 0.3s;
 }
 
 .mole.up {
-  bottom: 0;
+  bottom: 10px; /* 冒出 */
 }
 
 #status {
