@@ -1,20 +1,32 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <title>調果汁小遊戲</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>調果汁小遊戲 V2</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>🍹 調果汁小遊戲 🍹</h1>
-  <div id="game">
+
+  <div id="difficultySelect">
+    <p>選擇難度：</p>
+    <button data-time="15">簡單</button>
+    <button data-time="10">中等</button>
+    <button data-time="7">困難</button>
+  </div>
+
+  <div id="game" style="display:none;">
     <div id="order"></div>
+    <div id="cup">🥤</div>
     <div id="ingredients"></div>
     <button id="submitBtn">送出果汁</button>
     <div id="status"></div>
     <div id="timer"></div>
     <div id="score"></div>
   </div>
-  <script src="game.js"></script>
+
+  <audio id="sendSound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
+
+<script src="game.js"></script>
 </body>
 </html>
