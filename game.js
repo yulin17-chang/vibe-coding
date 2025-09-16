@@ -1,8 +1,9 @@
-// --- 遊戲數據 ---
+document.addEventListener("DOMContentLoaded", () => {
+
 const INGREDIENTS = ["🍎", "🍊", "🍌", "🍓", "🥭", "🥝"];
 const TOTAL_ORDERS = 5;
 
-let TIME_LIMIT = 10; // 從難度選擇更新
+let TIME_LIMIT = 10;
 let currentOrder = [];
 let playerSelection = [];
 let orderIndex = 0;
@@ -11,12 +12,12 @@ let score = 0;
 let timer;
 let startTime;
 
-// --- DOM ---
 const difficultyDiv = document.getElementById("difficultySelect");
 const gameDiv = document.getElementById("game");
 const orderDiv = document.getElementById("order");
 const ingredientsDiv = document.getElementById("ingredients");
 const cupDiv = document.getElementById("cup");
+const juiceDiv = document.getElementById("juice");
 const submitBtn = document.getElementById("submitBtn");
 const statusDiv = document.getElementById("status");
 const timerDiv = document.getElementById("timer");
@@ -25,12 +26,12 @@ const sendSound = document.getElementById("sendSound");
 
 // --- 難度選擇 ---
 difficultyDiv.querySelectorAll("button").forEach(btn => {
-  btn.onclick = () => {
+  btn.addEventListener("click", () => {
     TIME_LIMIT = parseInt(btn.dataset.time);
     difficultyDiv.style.display = "none";
     gameDiv.style.display = "block";
     init();
-  };
+  });
 });
 
 // --- 初始化 ---
@@ -40,7 +41,7 @@ function init() {
   fails = 0;
   score = 0;
   playerSelection = [];
-  cupDiv.textContent = "🥤";
+  juiceDiv.style.height = "0%";
   submitBtn.disabled = false;
   nextOrder();
 }
@@ -72,12 +73,12 @@ function nextOrder() {
 
   currentOrder = generateOrder();
   playerSelection = [];
+  juiceDiv.style.height = "0%";
 
   orderDiv.innerHTML = `<h3>第 ${orderIndex + 1} 筆訂單</h3>
     <p>需要：${currentOrder.join(" + ")}</p>`;
 
   renderIngredients();
-  cupDiv.textContent = "🥤";
   startCountdown();
 }
 
@@ -93,6 +94,7 @@ function startCountdown() {
     if (timeLeft <= 0) {
       clearInterval(timer);
       fails++;
+      shakeCup();
       statusDiv.textContent = `時間到！這筆訂單失敗 😢 (失敗次數: ${fails})`;
       orderIndex++;
       setTimeout(nextOrder, 1500);
@@ -118,35 +120,45 @@ cupDiv.ondragover = e => e.preventDefault();
 cupDiv.ondrop = e => {
   const ing = e.dataTransfer.getData("text");
   playerSelection.push(ing);
-  cupDiv.textContent = "🥤 " + playerSelection.join(" ");
+  updateJuice();
   statusDiv.textContent = `目前選擇：${playerSelection.join(" + ")}`;
 };
 
+// --- 更新杯子果汁高度 ---
+function updateJuice() {
+  const percent = Math.min(100, (playerSelection.length / currentOrder.length) * 100);
+  juiceDiv.style.height = percent + "%";
+}
+
 // --- 送出檢查 ---
 submitBtn.onclick = () => {
+  clearInterval(timer);
+  sendSound.play();
   if (arraysEqual(currentOrder, playerSelection)) {
     score++;
+    flashCup();
     statusDiv.textContent = "✅ 完美完成訂單！";
   } else {
     fails++;
+    shakeCup();
     statusDiv.textContent = `❌ 配方錯誤！失敗次數: ${fails}`;
   }
-  sendSound.play();
-  animateCup();
-  clearInterval(timer);
   orderIndex++;
   setTimeout(nextOrder, 1500);
 };
 
-// --- 送單動畫 ---
-function animateCup() {
-  cupDiv.style.transition = "all 0.5s ease";
-  cupDiv.style.transform = "translateY(-50px) rotate(15deg)";
-  setTimeout(() => {
-    cupDiv.style.transform = "translateY(0px) rotate(0deg)";
-    cupDiv.style.transition = "";
-    cupDiv.textContent = "🥤";
-  }, 500);
+// --- 特效 ---
+function flashCup() {
+  cupDiv.style.transition = "0.2s";
+  cupDiv.style.transform = "scale(1.1)";
+  setTimeout(() => { cupDiv.style.transform = "scale(1)"; }, 200);
+}
+
+function shakeCup() {
+  cupDiv.style.transition = "0.05s";
+  cupDiv.style.transform = "translateX(-10px)";
+  setTimeout(()=>{cupDiv.style.transform = "translateX(10px)";},50);
+  setTimeout(()=>{cupDiv.style.transform = "translateX(0px)";},100);
 }
 
 // --- 工具函式 ---
@@ -164,14 +176,17 @@ function endGame(msg) {
   ingredientsDiv.innerHTML = "";
   submitBtn.disabled = true;
   timerDiv.textContent = "";
-  statusDiv.textContent = msg.replace(/\n/g,"<br>");
+  statusDiv.innerHTML = msg.replace(/\n/g,"<br>");
   scoreDiv.innerHTML = `<button onclick="restartGame()">再次遊玩</button>`;
 }
 
 // --- 再次遊玩 ---
-function restartGame() {
+window.restartGame = function() {
   difficultyDiv.style.display = "block";
   gameDiv.style.display = "none";
   scoreDiv.innerHTML = "";
   statusDiv.textContent = "";
+  juiceDiv.style.height = "0%";
 }
+
+});
