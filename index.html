@@ -2,38 +2,23 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
-<title>調果汁小遊戲 V4</title>
+<title>打地鼠</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>🍹 調果汁小遊戲 🍹</h1>
+<h1>🐹 打地鼠 🐹</h1>
 
-<div id="difficultySelect">
-  <p>選擇難度：</p>
-  <button data-time="15">簡單</button>
-  <button data-time="10">中等</button>
-  <button data-time="7">困難</button>
-</div>
-
-<div id="game" style="display:none;">
-  <div id="order"></div>
-  <div id="cupWrapper">
-    <div id="cup">
-      <div id="juice"></div>
-      🥤
-    </div>
+<div id="game">
+  <div id="grid"></div>
+  <div id="status">
+    <span id="score">分數: 0</span>
+    <span id="timer">時間: 30s</span>
   </div>
-  <div id="ingredients"></div>
-  <button id="submitBtn">送出果汁</button>
-  <div id="status"></div>
-  <div id="timer"></div>
-  <div id="score"></div>
+  <button id="startBtn">開始遊戲</button>
 </div>
 
-<!-- 音效 -->
-<audio id="sendSound" src="https://www.soundjay.com/button/sounds/button-3.mp3"></audio>
-<audio id="pourSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
+<audio id="hitSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
 
-<script src="game.js?v=1"></script>
+<script src="game.js"></script>
 </body>
 </html>
