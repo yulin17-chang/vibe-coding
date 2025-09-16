@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tetris Vibe</title>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <h1>Tetris Vibe</h1>
-    <canvas id="tetris" width="240" height="400"></canvas>
-    <div id="score">Score: 0</div>
-    <script type="module" src="./main.js"></script>
-  </body>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <title>調果汁小遊戲</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🍹 調果汁小遊戲 🍹</h1>
+  <div id="game">
+    <div id="order"></div>
+    <div id="ingredients"></div>
+    <button id="submitBtn">送出果汁</button>
+    <div id="status"></div>
+    <div id="timer"></div>
+    <div id="score"></div>
+  </div>
+  <script src="game.js"></script>
+</body>
 </html>
