@@ -16,9 +16,12 @@ let moleTimer;
 for(let i=0; i<9; i++){
   const cell = document.createElement("div");
   cell.classList.add("cell");
+
   const mole = document.createElement("div");
   mole.classList.add("mole");
+  mole.textContent = "🐹"; // emoji 地鼠
   cell.appendChild(mole);
+
   grid.appendChild(cell);
   cells.push({cell, mole});
 }
@@ -32,7 +35,9 @@ function startGame() {
   timeLeft = 30;
   timerDisplay.textContent = `時間: ${timeLeft}s`;
   startBtn.disabled = true;
+
   nextMole();
+
   gameTimer = setInterval(() => {
     timeLeft--;
     timerDisplay.textContent = `時間: ${timeLeft}s`;
@@ -44,15 +49,22 @@ function startGame() {
 
 // --- 顯示下一隻地鼠 ---
 function nextMole(){
+  // 隱藏上一隻
   if(currentMole){
     currentMole.classList.remove("up");
     currentMole.removeEventListener("click", hitMole);
   }
-  const index = Math.floor(Math.random()*cells.length);
+
+  // 隨機選格子
+  const index = Math.floor(Math.random() * cells.length);
   currentMole = cells[index].mole;
+
+  // 冒出
   currentMole.classList.add("up");
   currentMole.addEventListener("click", hitMole);
-  const nextTime = Math.random()*1000 + 500; // 0.5~1.5秒
+
+  // 隨機停留時間 0.5~1.5秒
+  const nextTime = Math.random() * 1000 + 500;
   moleTimer = setTimeout(nextMole, nextTime);
 }
 
@@ -62,6 +74,7 @@ function hitMole(){
   scoreDisplay.textContent = `分數: ${score}`;
   hitSound.currentTime = 0;
   hitSound.play();
+
   currentMole.classList.remove("up");
   currentMole.removeEventListener("click", hitMole);
   currentMole = null;
@@ -72,7 +85,7 @@ function endGame(){
   clearInterval(gameTimer);
   clearTimeout(moleTimer);
   if(currentMole) currentMole.classList.remove("up");
-  alert(`遊戲結束！你的分數: ${score}`);
+  alert(`遊戲結束！您的分數: ${score}`);
   startBtn.disabled = false;
 }
 });
