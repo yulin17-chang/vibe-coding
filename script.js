@@ -38,7 +38,7 @@ function startGame() {
   score = 0;
   lives = 3;
   time = 0;
-  scoreDisplay.textContent = "分數：" + score;
+  scoreDisplay.textContent = "⭐分數：" + score;
   livesDisplay.textContent = "生命：" + lives;
   timeDisplay.textContent = "時間：" + time + " 秒";
   isGameOver = false;
@@ -118,14 +118,14 @@ function handleCollision(obj) {
     }
   } else if (type === "star") {
     score += 1;
-    scoreDisplay.textContent = "分數：" + score;
+    scoreDisplay.textContent = "⭐分數：" + score;
     effectText = "+1";
     color = "green";
     hitSound.currentTime = 0;
     hitSound.play();
   } else if (type === "gem") {
     score += 3;
-    scoreDisplay.textContent = "分數：" + score;
+    scoreDisplay.textContent = "⭐分數：" + score;
     effectText = "+3";
     color = "blue";
     hitSound.currentTime = 0;
@@ -158,6 +158,6 @@ function endGame() {
   bgMusic.currentTime = 0;
 
   gameOverScreen.style.display = "block";
-  finalScore.textContent = `您的分數：${score}`;
+  finalScore.textContent = `⭐您的分數：${score}`;
   finalTime.textContent = `存活時間：${time} 秒`;
 }
