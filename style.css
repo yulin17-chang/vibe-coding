@@ -22,9 +22,10 @@ h1 {
   position: relative;
   width: 400px;
   height: 600px;
-  background: #000;
-  border: 5px solid #fff; /* 固定範圍框 */
+  background: #fff;   /* 背景改為白色 */
+  border: 5px solid #000; /* 邊框黑色，固定 */
   overflow: hidden;
+  margin: 0 auto;     /* 確保置中 */
 }
 
 #player {
