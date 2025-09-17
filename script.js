@@ -39,8 +39,8 @@ function startGame() {
   lives = 3;
   time = 0;
   scoreDisplay.textContent = "⭐分數：" + score;
-  livesDisplay.textContent = "生命：" + lives;
-  timeDisplay.textContent = "時間：" + time + " 秒";
+  livesDisplay.textContent = "❤️生命：" + lives;
+  timeDisplay.textContent = "⏳時間：" + time + " 秒";
   isGameOver = false;
 
   bgMusic.currentTime = 0;
@@ -48,7 +48,7 @@ function startGame() {
 
   timerInterval = setInterval(() => {
     time++;
-    timeDisplay.textContent = "時間：" + time + " 秒";
+    timeDisplay.textContent = "⏳時間：" + time + " 秒";
   }, 1000);
 
   spawnInterval = setInterval(spawnFallingObject, 1000);
@@ -108,7 +108,7 @@ function handleCollision(obj) {
 
   if (type === "bomb") {
     lives--;
-    livesDisplay.textContent = "生命：" + lives;
+    livesDisplay.textContent = "❤️生命：" + lives;
     effectText = "-1 ❤️";
     color = "red";
     bombSound.currentTime = 0;
@@ -159,5 +159,5 @@ function endGame() {
 
   gameOverScreen.style.display = "block";
   finalScore.textContent = `⭐您的分數：${score}`;
-  finalTime.textContent = `存活時間：${time} 秒`;
+  finalTime.textContent = `⏳存活時間：${time} 秒`;
 }
