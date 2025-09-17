@@ -1,29 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-<title>打地鼠遊戲</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <title>🐹 打地鼠遊戲</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h1>🐹 打地鼠遊戲 🐹</h1>
-
-<div id="game">
-  <div id="grid"></div>
-  <div id="status">
-    <span id="score">分數: 0</span>
-    <span id="timer">時間: 30s</span>
+  <h1>🐹 打地鼠遊戲 </h1>
+  <div class="controls">
+    <button id="start-btn">開始遊戲</button>
+    <button id="pause-btn" style="display:none;">暫停</button>
+    <button id="resume-btn" style="display:none;">繼續</button>
+    <button id="end-btn" style="display:none;">結束遊戲</button>
   </div>
-  <div id="controls">
-    <button id="startBtn">開始遊戲</button>
-    <button id="pauseBtn">暫停遊戲</button>
-    <button id="endBtn">結束遊戲</button>
+  <div class="status">
+    <p>分數: <span id="score">0</span></p>
+    <p>時間: <span id="time">30</span> 秒</p>
   </div>
-</div>
-
-<audio id="hitSound" src="https://www.soundjay.com/button/sounds/button-16.mp3"></audio>
-<audio id="bombSound" src="https://www.soundjay.com/button/sounds/button-4.mp3"></audio>
-
-<script src="game.js?v=1"></script>
+  <div class="game-grid" id="game-grid"></div>
+  <script src="game.js?v=1"></script>
 </body>
 </html>
