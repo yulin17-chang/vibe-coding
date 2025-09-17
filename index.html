@@ -2,11 +2,11 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>打地鼠</title>
+  <title>打地鼠遊戲</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🐹 打地鼠 🐹</h1>
+  <h1>🐹 打地鼠遊戲 🐹</h1>
   <div class="controls">
     <button id="start-btn">開始遊戲</button>
     <button id="pause-btn" style="display:none;">暫停</button>
@@ -17,7 +17,12 @@
     <p>分數: <span id="score">0</span></p>
     <p>時間: <span id="time">30</span> 秒</p>
   </div>
-  <div class="game-grid" id="game-grid"></div>
+  
+  <!-- 街機框 -->
+  <div class="arcade-frame">
+    <div class="game-grid" id="game-grid"></div>
+  </div>
+
   <script src="game.js"></script>
 </body>
 </html>
