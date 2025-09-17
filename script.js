@@ -23,9 +23,9 @@ let playerX = 180;
 document.addEventListener("keydown", (e) => {
   if (isGameOver) return;
   if (e.key === "ArrowLeft" && playerX > 0) {
-    playerX -= 20;
+    playerX -= 50;
   } else if (e.key === "ArrowRight" && playerX < 360) {
-    playerX += 20;
+    playerX += 50;
   }
   player.style.left = playerX + "px";
 });
