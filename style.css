@@ -50,10 +50,11 @@ h1 {
 #sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;  /* 垂直置中 */
   align-items: center;
   width: 200px;
-  font-size: 18px;
+  font-size: 22px;          /* 放大字體 */
+  min-height: 600px;        /* 跟遊戲區一樣高 */
 }
 
 button {
