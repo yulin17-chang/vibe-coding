@@ -32,13 +32,13 @@ h1 {
   position: absolute;
   bottom: 20px;
   left: 180px;
-  font-size: 60px; /* 玩家放大 */
+  font-size: 100px; /* 玩家放大 */
 }
 
 .falling {
   position: absolute;
   top: 0;
-  font-size: 60px; /* 掉落物放大 */
+  font-size: 80px; /* 掉落物放大 */
   animation: fall linear;
 }
 
