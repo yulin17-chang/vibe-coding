@@ -91,7 +91,7 @@ function spawnFallingObject() {
   let type = getRandomType();
   obj.textContent = type.symbol;
   obj.dataset.type = type.type;
-  obj.style.left = Math.floor(Math.random() * 360) + "px";
+  obj.style.left = Math.floor(Math.random() * (gameContainer.clientWidth - 40)) + "px";
   obj.style.animationDuration = type.speed + "s";
   gameContainer.appendChild(obj);
 
@@ -167,6 +167,9 @@ function endGame() {
   clearInterval(spawnInterval);
   clearInterval(timerInterval);
   bgMusic.pause(); bgMusic.currentTime = 0;
+
+  // 🔹 移除所有現有掉落物
+  document.querySelectorAll(".falling").forEach(obj => obj.remove());
 
   pauseBtn.style.display = "none";
   gameOverScreen.style.display = "block";
