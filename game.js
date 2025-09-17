@@ -6,6 +6,7 @@ const startBtn = document.getElementById("startBtn");
 const pauseBtn = document.getElementById("pauseBtn");
 const endBtn = document.getElementById("endBtn");
 const hitSound = document.getElementById("hitSound");
+const bombSound = document.getElementById("bombSound");
 
 let cells = [];
 let score = 0;
@@ -19,17 +20,10 @@ let isPaused = false;
 for(let i=0; i<9; i++){
   const cell = document.createElement("div");
   cell.classList.add("cell");
-
-  const mole = document.createElement("div");
-  mole.classList.add("mole");
-  mole.textContent = "🐹";
-  cell.appendChild(mole);
-
   grid.appendChild(cell);
-  cells.push({cell, mole});
+  cells.push(cell);
 }
 
-// --- 開始遊戲 ---
 startBtn.addEventListener("click", startGame);
 pauseBtn.addEventListener("click", togglePause);
 endBtn.addEventListener("click", endGame);
@@ -39,8 +33,10 @@ function startGame() {
   scoreDisplay.textContent = "分數: 0";
   timeLeft = 30;
   timerDisplay.textContent = `時間: ${timeLeft}s`;
-  startBtn.disabled = true;
   isPaused = false;
+
+  startBtn.style.display = "none"; // 隱藏開始按鈕
+
   nextMole();
   gameTimer = setInterval(() => {
     if(!isPaused){
@@ -56,7 +52,6 @@ function startGame() {
 function togglePause(){
   isPaused = !isPaused;
   pauseBtn.textContent = isPaused ? "繼續遊戲" : "暫停遊戲";
-  // 隱藏地鼠或暫停動畫
   if(isPaused && currentMole){
     currentMole.classList.remove("up");
   } else if(!isPaused && currentMole){
@@ -64,41 +59,67 @@ function togglePause(){
   }
 }
 
-// --- 顯示下一隻地鼠 ---
 function nextMole(){
-  if(isPaused) return; // 暫停時不生成
+  if(isPaused) return;
+
+  // 清掉前一隻
   if(currentMole){
-    currentMole.classList.remove("up");
-    currentMole.removeEventListener("click", hitMole);
+    currentMole.remove();
+    currentMole = null;
   }
+
+  // 隨機挑一格
   const index = Math.floor(Math.random() * cells.length);
-  currentMole = cells[index].mole;
-  currentMole.classList.add("up");
-  currentMole.addEventListener("click", hitMole);
+  const mole = document.createElement("div");
+  mole.classList.add("mole", "up");
 
-  const nextTime = Math.random() * 1000 + 500;
-  moleTimer = setTimeout(nextMole, nextTime);
+  // 隨機決定種類
+  const type = pickMoleType();
+  mole.classList.add(type.className);
+  mole.textContent = type.icon;
+
+  mole.addEventListener("click", () => hitMole(type));
+
+  cells[index].appendChild(mole);
+  currentMole = mole;
+
+  // 設定出現時間
+  const stayTime = type.stay;
+  moleTimer = setTimeout(nextMole, stayTime);
 }
 
-// --- 點擊地鼠 ---
-function hitMole(){
-  score++;
+function pickMoleType(){
+  const random = Math.random();
+  if(random < 0.6) return {className: "normal", icon:"🐹", score:1, stay:1000};
+  if(random < 0.8) return {className: "gold", icon:"🐹", score:3, stay:1200};
+  if(random < 0.95) return {className: "fast", icon:"🐹", score:2, stay:600};
+  return {className: "bomb", icon:"💣", score:-3, stay:1200};
+}
+
+function hitMole(type){
+  score += type.score;
   scoreDisplay.textContent = `分數: ${score}`;
-  hitSound.currentTime = 0;
-  hitSound.play();
-
-  currentMole.classList.remove("up");
-  currentMole.removeEventListener("click", hitMole);
-  currentMole = null;
+  if(type.score > 0){
+    hitSound.currentTime = 0;
+    hitSound.play();
+  } else {
+    bombSound.currentTime = 0;
+    bombSound.play();
+  }
+  if(currentMole){
+    currentMole.remove();
+    currentMole = null;
+  }
 }
 
-// --- 結束遊戲 ---
 function endGame(){
   clearInterval(gameTimer);
   clearTimeout(moleTimer);
-  if(currentMole) currentMole.classList.remove("up");
+  if(currentMole) currentMole.remove();
+
   alert(`遊戲結束！你的分數: ${score}`);
-  startBtn.disabled = false;
+
+  startBtn.style.display = "inline-block"; // 結束後顯示開始按鈕
   pauseBtn.textContent = "暫停遊戲";
   isPaused = false;
 }
