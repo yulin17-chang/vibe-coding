@@ -15,16 +15,15 @@
 
     <!-- 右側資訊區 -->
     <div id="sidebar">
-      <button id="start-btn">開始遊戲</button>
-      <div id="info">
-        <p>分數：<span id="score">0</span></p>
-        <p>生命：<span id="lives">3</span></p>
-        <p>時間：<span id="time">0</span> 秒</p>
-      </div>
-      <div id="game-over" class="hidden">
+      <p id="score">分數：0</p>
+      <p id="lives">生命：3</p>
+      <p id="time">時間：0 秒</p>
+    
+      <div id="gameOver" style="display:none;">
         <h2>遊戲結束！</h2>
-        <p id="final-score"></p>
-        <button onclick="location.reload()">再次遊玩</button>
+        <p id="finalScore">您的分數：0</p>
+        <p id="finalTime">存活時間：0 秒</p>
+        <button onclick="startGame()">再次遊玩</button>
       </div>
     </div>
   </div>
