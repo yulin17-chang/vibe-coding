@@ -1,83 +1,87 @@
 body {
-  font-family: 'Comic Sans MS', sans-serif;
+  font-family: "Microsoft JhengHei", sans-serif;
   text-align: center;
-  background: linear-gradient(135deg, #ffecd2, #fcb69f);
-}
-
-h1 {
-  font-size: 2.5em;
-  margin-bottom: 10px;
-}
-
-.controls {
-  margin: 15px;
-}
-
-button {
-  font-size: 1.1em;
-  padding: 8px 16px;
-  margin: 5px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #ff9800;
+  background: radial-gradient(circle, #444 0%, #000 100%);
   color: white;
-  transition: transform 0.2s;
-}
-button:hover {
-  transform: scale(1.1);
-  background-color: #e68900;
 }
 
-.status {
-  margin: 10px;
-  font-size: 1.3em;
+#game {
+  margin: 20px auto;
+  width: 360px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #222;
+  box-shadow: 0 0 20px #ffcc00;
 }
 
-.game-grid {
+#grid {
   display: grid;
   grid-template-columns: repeat(3, 100px);
-  grid-gap: 15px;
-  justify-content: center;
-  margin-top: 20px;
+  grid-gap: 10px;
+  margin-bottom: 20px;
 }
 
-.hole {
+.cell {
   width: 100px;
   height: 100px;
-  background: #654321;
-  border-radius: 50%;
+  border-radius: 12px;
+  background: #555;
   position: relative;
   overflow: hidden;
+  font-size: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
 }
 
 .mole {
-  font-size: 2em;
-  cursor: pointer;
   position: absolute;
-  bottom: -100%;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: popUp 0.3s forwards;
+  bottom: -60px;
+  transition: bottom 0.3s ease-in-out;
 }
 
-@keyframes popUp {
-  from { bottom: -100%; }
-  to { bottom: 10%; }
+.mole.up {
+  bottom: 10px;
 }
 
-@keyframes flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+/* --- 種類樣式 --- */
+.normal { color: burlywood; }
+.gold { color: gold; animation: blink 0.6s infinite alternate; }
+.fast { color: skyblue; }
+.bomb { color: red; animation: shake 0.3s infinite; }
+
+/* 閃爍 */
+@keyframes blink {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
 }
 
+/* 震動 */
 @keyframes shake {
-  0%, 100% { transform: translate(-50%, 0); }
-  25% { transform: translate(-55%, -2px); }
-  50% { transform: translate(-45%, 2px); }
-  75% { transform: translate(-55%, -2px); }
+  0% { transform: translateX(0); }
+  25% { transform: translateX(-3px); }
+  50% { transform: translateX(3px); }
+  75% { transform: translateX(-3px); }
+  100% { transform: translateX(0); }
 }
-.mole.normal { color: saddlebrown; }
-.mole.gold { color: gold; animation: flash 0.8s infinite; }
-.mole.fast { color: dodgerblue; }
-.mole.bomb { color: red; animation: shake 0.4s infinite; }
+
+#status {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+#controls button {
+  margin: 5px;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  background: #ff7b54;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#controls button:hover {
+  background: #ff5a2b;
+}
