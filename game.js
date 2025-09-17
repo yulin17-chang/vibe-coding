@@ -1,126 +1,115 @@
-document.addEventListener("DOMContentLoaded", () => {
-const grid = document.getElementById("grid");
+const grid = document.getElementById("game-grid");
 const scoreDisplay = document.getElementById("score");
-const timerDisplay = document.getElementById("timer");
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
-const endBtn = document.getElementById("endBtn");
-const hitSound = document.getElementById("hitSound");
-const bombSound = document.getElementById("bombSound");
+const timeDisplay = document.getElementById("time");
+const startBtn = document.getElementById("start-btn");
+const pauseBtn = document.getElementById("pause-btn");
+const resumeBtn = document.getElementById("resume-btn");
+const endBtn = document.getElementById("end-btn");
 
-let cells = [];
 let score = 0;
-let currentMole = null;
 let timeLeft = 30;
-let gameTimer;
-let moleTimer;
-let isPaused = false;
+let timer;
+let gameInterval;
+let gameActive = false;
+let paused = false;
 
-// --- 建立九個格子 ---
-for(let i=0; i<9; i++){
-  const cell = document.createElement("div");
-  cell.classList.add("cell");
-  grid.appendChild(cell);
-  cells.push(cell);
+// 建立九個洞
+for (let i = 0; i < 9; i++) {
+  const hole = document.createElement("div");
+  hole.classList.add("hole");
+  grid.appendChild(hole);
 }
 
-startBtn.addEventListener("click", startGame);
-pauseBtn.addEventListener("click", togglePause);
-endBtn.addEventListener("click", endGame);
+function randomMole() {
+  if (!gameActive || paused) return;
+
+  const holes = document.querySelectorAll(".hole");
+  const hole = holes[Math.floor(Math.random() * holes.length)];
+
+  const mole = document.createElement("div");
+
+  // 隨機決定種類
+  const typeChance = Math.random();
+  let moleType;
+  if (typeChance < 0.6) moleType = "normal";       // 60%
+  else if (typeChance < 0.8) moleType = "gold";    // 20%
+  else if (typeChance < 0.95) moleType = "fast";   // 15%
+  else moleType = "bomb";                          // 5%
+
+  mole.classList.add("mole", moleType);
+
+  // emoji 顯示
+  mole.textContent = moleType === "bomb" ? "💣" : "🐹";
+
+  mole.addEventListener("click", () => {
+    if (!gameActive) return;
+    if (moleType === "normal") score += 1;
+    if (moleType === "gold") score += 3;
+    if (moleType === "fast") score += 2;
+    if (moleType === "bomb") score -= 3;
+
+    scoreDisplay.textContent = score;
+    mole.remove();
+  });
+
+  hole.appendChild(mole);
+
+  // 存活時間
+  let duration = 1000;
+  if (moleType === "fast") duration = 500;
+  setTimeout(() => mole.remove(), duration);
+}
 
 function startGame() {
   score = 0;
-  scoreDisplay.textContent = "分數: 0";
   timeLeft = 30;
-  timerDisplay.textContent = `時間: ${timeLeft}s`;
-  isPaused = false;
+  scoreDisplay.textContent = score;
+  timeDisplay.textContent = timeLeft;
+  gameActive = true;
+  paused = false;
 
-  startBtn.style.display = "none"; // 隱藏開始按鈕
+  startBtn.style.display = "none";
+  pauseBtn.style.display = "inline-block";
+  endBtn.style.display = "inline-block";
+  resumeBtn.style.display = "none";
 
-  nextMole();
-  gameTimer = setInterval(() => {
-    if(!isPaused){
+  timer = setInterval(() => {
+    if (!paused) {
       timeLeft--;
-      timerDisplay.textContent = `時間: ${timeLeft}s`;
-      if(timeLeft <= 0){
-        endGame();
-      }
+      timeDisplay.textContent = timeLeft;
+      if (timeLeft <= 0) endGame();
     }
   }, 1000);
+
+  gameInterval = setInterval(randomMole, 800);
 }
 
-function togglePause(){
-  isPaused = !isPaused;
-  pauseBtn.textContent = isPaused ? "繼續遊戲" : "暫停遊戲";
-  if(isPaused && currentMole){
-    currentMole.classList.remove("up");
-  } else if(!isPaused && currentMole){
-    currentMole.classList.add("up");
-  }
+function pauseGame() {
+  paused = true;
+  pauseBtn.style.display = "none";
+  resumeBtn.style.display = "inline-block";
 }
 
-function nextMole(){
-  if(isPaused) return;
-
-  // 清掉前一隻
-  if(currentMole){
-    currentMole.remove();
-    currentMole = null;
-  }
-
-  // 隨機挑一格
-  const index = Math.floor(Math.random() * cells.length);
-  const mole = document.createElement("div");
-  mole.classList.add("mole", "up");
-
-  // 隨機決定種類
-  const type = pickMoleType();
-  mole.classList.add(type.className);
-  mole.textContent = type.icon;
-
-  mole.addEventListener("click", () => hitMole(type));
-
-  cells[index].appendChild(mole);
-  currentMole = mole;
-
-  // 設定出現時間
-  const stayTime = type.stay;
-  moleTimer = setTimeout(nextMole, stayTime);
+function resumeGame() {
+  paused = false;
+  pauseBtn.style.display = "inline-block";
+  resumeBtn.style.display = "none";
 }
 
-function pickMoleType(){
-  const random = Math.random();
-  if(random < 0.6) return {className: "normal", icon:"🐹", score:1, stay:1000};
-  if(random < 0.8) return {className: "gold", icon:"🐹", score:3, stay:1200};
-  if(random < 0.95) return {className: "fast", icon:"🐹", score:2, stay:600};
-  return {className: "bomb", icon:"💣", score:-3, stay:1200};
+function endGame() {
+  gameActive = false;
+  clearInterval(timer);
+  clearInterval(gameInterval);
+
+  pauseBtn.style.display = "none";
+  resumeBtn.style.display = "none";
+  endBtn.style.display = "none";
+  startBtn.style.display = "inline-block";
+
+  alert(`遊戲結束！您的分數是 ${score} 分`);
 }
 
-function hitMole(type){
-  score += type.score;
-  scoreDisplay.textContent = `分數: ${score}`;
-  if(type.score > 0){
-    hitSound.currentTime = 0;
-    hitSound.play();
-  } else {
-    bombSound.currentTime = 0;
-    bombSound.play();
-  }
-  if(currentMole){
-    currentMole.remove();
-    currentMole = null;
-  }
-}
-
-function endGame(){
-  clearInterval(gameTimer);
-  clearTimeout(moleTimer);
-  if(currentMole) currentMole.remove();
-
-  alert(`遊戲結束！你的分數: ${score}`);
-
-  startBtn.style.display = "inline-block"; // 結束後顯示開始按鈕
-  pauseBtn.textContent = "暫停遊戲";
-  isPaused = false;
-}
-});
+startBtn.addEventListener("click", startGame);
+pauseBtn.addEventListener("click", pauseGame);
+resumeBtn.addEventListener("click", resumeGame);
+endBtn.addEventListener("click", endGame);
