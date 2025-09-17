@@ -1,23 +1,26 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>🐹 打地鼠遊戲</title>
+  <title>Dodge Game 躲避下落物</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>🐹 打地鼠遊戲 </h1>
-  <div class="controls">
-    <button id="start-btn">開始遊戲</button>
-    <button id="pause-btn" style="display:none;">暫停</button>
-    <button id="resume-btn" style="display:none;">繼續</button>
-    <button id="end-btn" style="display:none;">結束遊戲</button>
+  <h1>🚀 Dodge Game 躲避下落物</h1>
+  <div id="game-container">
+    <div id="player">🧑‍🚀</div>
   </div>
-  <div class="status">
-    <p>分數: <span id="score">0</span></p>
-    <p>時間: <span id="time">30</span> 秒</p>
+  <div id="info">
+    <p>分數：<span id="score">0</span></p>
+    <p>生命：<span id="lives">3</span></p>
+    <p>時間：<span id="time">0</span> 秒</p>
   </div>
-  <div class="game-grid" id="game-grid"></div>
-  <script src="game.js?v=1"></script>
+  <button id="start-btn">開始遊戲</button>
+  <div id="game-over" class="hidden">
+    <h2>遊戲結束！</h2>
+    <p id="final-score"></p>
+    <button onclick="location.reload()">再次遊玩</button>
+  </div>
+  <script src="script.js"></script>
 </body>
 </html>
