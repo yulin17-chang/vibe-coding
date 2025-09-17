@@ -7,12 +7,16 @@ const startBtn = document.getElementById("start-btn");
 const gameOverScreen = document.getElementById("game-over");
 const finalScore = document.getElementById("final-score");
 
+const bgMusic = document.getElementById("bg-music");
+const hitSound = document.getElementById("hit-sound");
+const bombSound = document.getElementById("bomb-sound");
+
 let score = 0;
 let lives = 3;
 let time = 0;
-let gameInterval, spawnInterval, timerInterval;
+let spawnInterval, timerInterval;
 let isGameOver = false;
-let playerX = 180; // 初始位置
+let playerX = 180;
 
 // 控制左右移動
 document.addEventListener("keydown", (e) => {
@@ -36,6 +40,9 @@ startBtn.addEventListener("click", () => {
   timeDisplay.textContent = time;
   isGameOver = false;
 
+  bgMusic.currentTime = 0;
+  bgMusic.play();
+
   timerInterval = setInterval(() => {
     time++;
     timeDisplay.textContent = time;
@@ -51,7 +58,7 @@ function spawnFallingObject() {
   let type = getRandomType();
   obj.textContent = type.symbol;
   obj.dataset.type = type.type;
-  obj.style.left = Math.floor(Math.random() * 370) + "px";
+  obj.style.left = Math.floor(Math.random() * 360) + "px";
   obj.style.animationDuration = type.speed + "s";
   gameContainer.appendChild(obj);
 
@@ -91,28 +98,50 @@ function getRandomType() {
 // 碰撞處理
 function handleCollision(obj) {
   const type = obj.dataset.type;
+  let effectText = "";
+  let color = "black";
+
   if (type === "bomb") {
     lives--;
     livesDisplay.textContent = lives;
+    effectText = "-1 ❤️";
+    color = "red";
+    bombSound.currentTime = 0;
+    bombSound.play();
     if (lives <= 0) {
       endGame();
     }
-  } else {
-    let item = getItem(type);
-    score += item.score;
+  } else if (type === "star") {
+    score += 1;
     scoreDisplay.textContent = score;
+    effectText = "+1";
+    color = "green";
+    hitSound.currentTime = 0;
+    hitSound.play();
+  } else if (type === "gem") {
+    score += 3;
+    scoreDisplay.textContent = score;
+    effectText = "+3";
+    color = "blue";
+    hitSound.currentTime = 0;
+    hitSound.play();
   }
+
+  showFloatText(effectText, color);
   obj.remove();
 }
 
-// 根據 type 找分數
-function getItem(type) {
-  const items = {
-    star: { score: 1 },
-    gem: { score: 3 },
-    bomb: { score: -2 }
-  };
-  return items[type];
+// 飄字提示
+function showFloatText(text, color) {
+  const float = document.createElement("div");
+  float.classList.add("float-text");
+  float.style.left = playerX + "px";
+  float.style.bottom = "60px";
+  float.style.color = color;
+  float.textContent = text;
+  gameContainer.appendChild(float);
+
+  setTimeout(() => float.remove(), 1000);
 }
 
 // 結束遊戲
@@ -120,6 +149,7 @@ function endGame() {
   isGameOver = true;
   clearInterval(spawnInterval);
   clearInterval(timerInterval);
+  bgMusic.pause();
   gameOverScreen.classList.remove("hidden");
   finalScore.textContent = `您的分數：${score}，存活時間：${time} 秒`;
 }
