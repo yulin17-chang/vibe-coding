@@ -3,9 +3,10 @@ const gameContainer = document.getElementById("game-container");
 const scoreDisplay = document.getElementById("score");
 const livesDisplay = document.getElementById("lives");
 const timeDisplay = document.getElementById("time");
-const startBtn = document.getElementById("start-btn");
-const gameOverScreen = document.getElementById("game-over");
-const finalScore = document.getElementById("final-score");
+const startBtn = document.getElementById("startBtn");
+const gameOverScreen = document.getElementById("gameOver");
+const finalScore = document.getElementById("finalScore");
+const finalTime = document.getElementById("finalTime");
 
 const bgMusic = document.getElementById("bg-music");
 const hitSound = document.getElementById("hit-sound");
@@ -30,14 +31,16 @@ document.addEventListener("keydown", (e) => {
 });
 
 // 開始遊戲
-startBtn.addEventListener("click", () => {
-  startBtn.classList.add("hidden");
+function startGame() {
+  startBtn.style.display = "none";
+  gameOverScreen.style.display = "none";
+
   score = 0;
   lives = 3;
   time = 0;
-  scoreDisplay.textContent = score;
-  livesDisplay.textContent = lives;
-  timeDisplay.textContent = time;
+  scoreDisplay.textContent = "分數：" + score;
+  livesDisplay.textContent = "生命：" + lives;
+  timeDisplay.textContent = "時間：" + time + " 秒";
   isGameOver = false;
 
   bgMusic.currentTime = 0;
@@ -45,11 +48,13 @@ startBtn.addEventListener("click", () => {
 
   timerInterval = setInterval(() => {
     time++;
-    timeDisplay.textContent = time;
+    timeDisplay.textContent = "時間：" + time + " 秒";
   }, 1000);
 
   spawnInterval = setInterval(spawnFallingObject, 1000);
-});
+}
+
+startBtn.addEventListener("click", startGame);
 
 // 產生掉落物
 function spawnFallingObject() {
@@ -103,7 +108,7 @@ function handleCollision(obj) {
 
   if (type === "bomb") {
     lives--;
-    livesDisplay.textContent = lives;
+    livesDisplay.textContent = "生命：" + lives;
     effectText = "-1 ❤️";
     color = "red";
     bombSound.currentTime = 0;
@@ -113,14 +118,14 @@ function handleCollision(obj) {
     }
   } else if (type === "star") {
     score += 1;
-    scoreDisplay.textContent = score;
+    scoreDisplay.textContent = "分數：" + score;
     effectText = "+1";
     color = "green";
     hitSound.currentTime = 0;
     hitSound.play();
   } else if (type === "gem") {
     score += 3;
-    scoreDisplay.textContent = score;
+    scoreDisplay.textContent = "分數：" + score;
     effectText = "+3";
     color = "blue";
     hitSound.currentTime = 0;
@@ -150,6 +155,9 @@ function endGame() {
   clearInterval(spawnInterval);
   clearInterval(timerInterval);
   bgMusic.pause();
-  gameOverScreen.classList.remove("hidden");
-  finalScore.textContent = `您的分數：${score}，存活時間：${time} 秒`;
+  bgMusic.currentTime = 0;
+
+  gameOverScreen.style.display = "block";
+  finalScore.textContent = `您的分數：${score}`;
+  finalTime.textContent = `存活時間：${time} 秒`;
 }
