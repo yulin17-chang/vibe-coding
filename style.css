@@ -38,9 +38,8 @@ button:hover {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-gap: 15px;
-  justify-content: center;   /* 九宮格水平置中 */
-  align-items: center;       /* 九宮格垂直置中 */
-  margin: 20px auto;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 .hole {
