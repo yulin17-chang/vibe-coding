@@ -1,83 +1,62 @@
 body {
   font-family: 'Comic Sans MS', sans-serif;
   text-align: center;
-  background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  background: linear-gradient(135deg, #89f7fe, #66a6ff);
+  margin: 0;
+  padding: 0;
 }
 
-h1 {
-  font-size: 2.5em;
-  margin-bottom: 10px;
+#game-container {
+  position: relative;
+  margin: 20px auto;
+  width: 400px;
+  height: 600px;
+  background: #fff;
+  border: 5px solid #333;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.4);
 }
 
-.controls {
-  margin: 15px;
+#player {
+  position: absolute;
+  bottom: 20px;
+  left: 180px;
+  font-size: 30px;
+}
+
+.falling {
+  position: absolute;
+  top: 0;
+  font-size: 28px;
+  animation: fall linear;
+}
+
+@keyframes fall {
+  from { top: 0; }
+  to { top: 600px; }
+}
+
+#info {
+  margin: 10px;
+  font-size: 18px;
 }
 
 button {
-  font-size: 1.1em;
-  padding: 8px 16px;
-  margin: 5px;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 18px;
   border: none;
   border-radius: 8px;
+  background: #ff7675;
+  color: #fff;
   cursor: pointer;
-  background-color: #ff9800;
-  color: white;
-  transition: transform 0.2s;
 }
+
 button:hover {
-  transform: scale(1.1);
-  background-color: #e68900;
+  background: #d63031;
 }
 
-.status {
-  margin: 10px;
-  font-size: 1.3em;
+.hidden {
+  display: none;
 }
-
-.game-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  grid-gap: 15px;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.hole {
-  width: 100px;
-  height: 100px;
-  background: #654321;
-  border-radius: 50%;
-  position: relative;
-  overflow: hidden;
-}
-
-.mole {
-  font-size: 2em;
-  cursor: pointer;
-  position: absolute;
-  bottom: -100%;
-  left: 50%;
-  transform: translateX(-50%);
-  animation: popUp 0.3s forwards;
-}
-
-@keyframes popUp {
-  from { bottom: -100%; }
-  to { bottom: 10%; }
-}
-
-@keyframes flash {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-@keyframes shake {
-  0%, 100% { transform: translate(-50%, 0); }
-  25% { transform: translate(-55%, -2px); }
-  50% { transform: translate(-45%, 2px); }
-  75% { transform: translate(-55%, -2px); }
-}
-.mole.normal { color: saddlebrown; }
-.mole.gold { color: gold; animation: flash 0.8s infinite; }
-.mole.fast { color: dodgerblue; }
-.mole.bomb { color: red; animation: shake 0.4s infinite; }
