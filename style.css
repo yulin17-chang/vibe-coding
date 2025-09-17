@@ -50,11 +50,20 @@ h1 {
 #sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: center;  /* 垂直置中 */
-  align-items: center;
-  width: 200px;
-  font-size: 22px;          /* 放大字體 */
-  min-height: 600px;        /* 跟遊戲區一樣高 */
+  justify-content: center; /* 垂直置中 */
+  font-size: 20px; /* 字大一點 */
+  line-height: 1.8;
+  text-align: left; /* 確保全部靠左 */
+  padding-left: 10px;
+}
+
+#gameOver h2 {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+#gameOver p {
+  margin: 5px 0;
 }
 
 button {
