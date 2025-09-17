@@ -38,7 +38,7 @@ h1 {
 .falling {
   position: absolute;
   top: 0;
-  font-size: 80px; /* 掉落物放大 */
+  font-size: 60px; /* 掉落物放大 */
   animation: fall linear;
 }
 
