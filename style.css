@@ -1,14 +1,24 @@
 body {
   font-family: 'Comic Sans MS', sans-serif;
-  text-align: center;
   background: linear-gradient(135deg, #89f7fe, #66a6ff);
   margin: 0;
   padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+h1 {
+  margin: 20px 0;
+}
+
+#game-wrapper {
+  display: flex;
+  gap: 20px;
 }
 
 #game-container {
   position: relative;
-  margin: 20px auto;
   width: 400px;
   height: 600px;
   background: #fff;
@@ -22,13 +32,13 @@ body {
   position: absolute;
   bottom: 20px;
   left: 180px;
-  font-size: 30px;
+  font-size: 40px; /* 玩家放大 */
 }
 
 .falling {
   position: absolute;
   top: 0;
-  font-size: 28px;
+  font-size: 40px; /* 掉落物放大 */
   animation: fall linear;
 }
 
@@ -37,13 +47,17 @@ body {
   to { top: 600px; }
 }
 
-#info {
-  margin: 10px;
+#sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 200px;
   font-size: 18px;
 }
 
 button {
-  margin-top: 10px;
+  margin: 10px 0;
   padding: 10px 20px;
   font-size: 18px;
   border: none;
@@ -59,4 +73,18 @@ button:hover {
 
 .hidden {
   display: none;
+}
+
+/* 飄字動畫 */
+.float-text {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+  animation: floatUp 1s ease-out forwards;
+  pointer-events: none;
+}
+
+@keyframes floatUp {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-50px); }
 }
