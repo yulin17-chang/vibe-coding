@@ -38,7 +38,6 @@ function randomMole() {
 
   mole.classList.add("mole", moleType);
 
-  // emoji 顯示
   mole.textContent = moleType === "bomb" ? "💣" : "🐹";
 
   mole.addEventListener("click", () => {
@@ -54,7 +53,6 @@ function randomMole() {
 
   hole.appendChild(mole);
 
-  // 存活時間
   let duration = 1000;
   if (moleType === "fast") duration = 500;
   setTimeout(() => mole.remove(), duration);
