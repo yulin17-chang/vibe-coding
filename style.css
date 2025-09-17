@@ -50,20 +50,45 @@ h1 {
 #sidebar {
   display: flex;
   flex-direction: column;
-  justify-content: center; /* 垂直置中 */
-  font-size: 20px; /* 字大一點 */
+  justify-content: center;   /* 垂直置中 */
+  align-items: flex-start;   /* 靠左對齊 */
+  font-size: 22px;           /* 字體放大 */
   line-height: 1.8;
-  text-align: left; /* 確保全部靠左 */
-  padding-left: 10px;
+  padding: 20px;
+}
+
+#sidebar p {
+  margin: 10px 0;
+}
+
+#gameOver {
+  margin-top: 20px;
 }
 
 #gameOver h2 {
-  margin-top: 20px;
   margin-bottom: 10px;
+  font-size: 26px;
+  font-weight: bold;
 }
 
 #gameOver p {
   margin: 5px 0;
+  font-size: 20px;
+}
+
+#gameOver button {
+  margin-top: 15px;
+  padding: 8px 16px;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+#gameOver button:hover {
+  background: #ff4b4b;
 }
 
 button {
