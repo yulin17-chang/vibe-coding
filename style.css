@@ -2,11 +2,18 @@ body {
   font-family: 'Comic Sans MS', sans-serif;
   text-align: center;
   background: linear-gradient(135deg, #ffecd2, #fcb69f);
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* 水平置中 */
+  justify-content: flex-start;
+  min-height: 100vh;
+  margin: 0;
 }
 
 h1 {
   font-size: 2.5em;
-  margin-bottom: 10px;
+  margin: 20px 0 10px;
+  text-shadow: 2px 2px #fff;
 }
 
 .controls {
@@ -22,7 +29,7 @@ button {
   cursor: pointer;
   background-color: #ff9800;
   color: white;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background-color 0.2s;
 }
 button:hover {
   transform: scale(1.1);
@@ -34,12 +41,24 @@ button:hover {
   font-size: 1.3em;
 }
 
+/* 街機框效果 */
+.arcade-frame {
+  background: #222;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.7),
+              inset 0 0 15px rgba(255, 255, 255, 0.2);
+  margin-top: 20px;
+  display: inline-block;
+}
+
+/* 九宮格 */
 .game-grid {
   display: grid;
   grid-template-columns: repeat(3, 100px);
   grid-gap: 15px;
   justify-content: center;
-  margin-top: 20px;
+  align-items: center;
 }
 
 .hole {
@@ -49,6 +68,7 @@ button:hover {
   border-radius: 50%;
   position: relative;
   overflow: hidden;
+  box-shadow: inset 0 5px #3e260e, inset 0 -5px #2a1509;
 }
 
 .mole {
@@ -77,6 +97,7 @@ button:hover {
   50% { transform: translate(-45%, 2px); }
   75% { transform: translate(-55%, -2px); }
 }
+
 .mole.normal { color: saddlebrown; }
 .mole.gold { color: gold; animation: flash 0.8s infinite; }
 .mole.fast { color: dodgerblue; }
