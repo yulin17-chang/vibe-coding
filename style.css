@@ -37,12 +37,12 @@ body {
 
 .mole {
   position: absolute;
-  bottom: -50px; /* 初始隱藏 */
+  bottom: -50px;
   transition: bottom 0.3s;
 }
 
 .mole.up {
-  bottom: 10px; /* 冒出 */
+  bottom: 10px;
 }
 
 #status {
@@ -51,7 +51,8 @@ body {
   margin-bottom: 10px;
 }
 
-button {
+#controls button {
+  margin: 5px;
   padding: 10px 16px;
   border-radius: 6px;
   border: none;
@@ -61,6 +62,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+#controls button:hover {
   background: #ff5a2b;
 }
