@@ -3,11 +3,11 @@ const gameContainer = document.getElementById("game-container");
 const scoreDisplay = document.getElementById("score");
 const livesDisplay = document.getElementById("lives");
 const timeDisplay = document.getElementById("time");
-const startBtn = document.getElementById("startBtn");
-const pauseBtn = document.getElementById("pauseBtn");
+const gameBtn = document.getElementById("gameBtn");
 const gameOverScreen = document.getElementById("gameOver");
 const finalScore = document.getElementById("finalScore");
 const finalTime = document.getElementById("finalTime");
+const centerGameOver = document.getElementById("centerGameOver");
 
 const bgMusic = document.getElementById("bg-music");
 const hitSound = document.getElementById("hit-sound");
@@ -17,6 +17,7 @@ let score = 0, lives = 3, time = 0;
 let spawnInterval, timerInterval;
 let isGameOver = false;
 let isPaused = false;
+let isPlaying = false; // 🔹 新增遊戲狀態
 let playerX = 180;
 let moveLeft = false, moveRight = false;
 
@@ -42,17 +43,27 @@ document.addEventListener("keyup", (e) => {
   if (e.key === "ArrowRight") moveRight = false;
 });
 
+// 數字補零
+function formatNum(num) {
+  return String(num).padStart(3, "0");
+}
+
+// 更新介面
+function updateUI() {
+  scoreDisplay.textContent = "⭐分數：" + formatNum(score);
+  livesDisplay.textContent = "❤️生命：" + formatNum(lives);
+  timeDisplay.textContent = "⏳時間：" + formatNum(time) + " 秒";
+}
+
 // 開始遊戲
 function startGame() {
-  startBtn.style.display = "none";
-  pauseBtn.style.display = "inline-block";
+  gameBtn.textContent = "暫停遊戲";
   gameOverScreen.style.display = "none";
+  centerGameOver.style.display = "none";
 
   score = 0; lives = 3; time = 0;
-  scoreDisplay.textContent = "⭐分數：" + score;
-  livesDisplay.textContent = "❤️生命：" + lives;
-  timeDisplay.textContent = "⏳時間：" + time + " 秒";
-  isGameOver = false; isPaused = false;
+  updateUI();
+  isGameOver = false; isPaused = false; isPlaying = true;
 
   bgMusic.currentTime = 0;
   bgMusic.play();
@@ -60,7 +71,7 @@ function startGame() {
   timerInterval = setInterval(() => {
     if (!isPaused) {
       time++;
-      timeDisplay.textContent = "⏳時間：" + time + " 秒";
+      updateUI();
     }
   }, 1000);
 
@@ -68,21 +79,27 @@ function startGame() {
     if (!isPaused) spawnFallingObject();
   }, 1000);
 }
-startBtn.addEventListener("click", startGame);
 
 // 暫停 / 繼續
 function togglePause() {
+  if (!isPlaying) {
+    startGame();
+    return;
+  }
+  if (isGameOver) return;
+
   if (isPaused) {
     isPaused = false;
-    pauseBtn.textContent = "暫停";
+    gameBtn.textContent = "暫停遊戲";
     bgMusic.play();
   } else {
     isPaused = true;
-    pauseBtn.textContent = "繼續";
+    gameBtn.textContent = "繼續遊戲";
     bgMusic.pause();
   }
 }
-pauseBtn.addEventListener("click", togglePause);
+
+gameBtn.addEventListener("click", togglePause);
 
 // 產生掉落物
 function spawnFallingObject() {
@@ -129,18 +146,18 @@ function handleCollision(obj) {
 
   if (type === "bomb") {
     lives--;
-    livesDisplay.textContent = "❤️生命：" + lives;
+    updateUI();
     effectText = "-1 ❤️"; color = "red";
     bombSound.currentTime = 0; bombSound.play();
     if (lives <= 0) endGame();
   } else if (type === "star") {
     score += 1;
-    scoreDisplay.textContent = "⭐分數：" + score;
+    updateUI();
     effectText = "+1"; color = "green";
     hitSound.currentTime = 0; hitSound.play();
   } else if (type === "gem") {
     score += 3;
-    scoreDisplay.textContent = "⭐分數：" + score;
+    updateUI();
     effectText = "+3"; color = "blue";
     hitSound.currentTime = 0; hitSound.play();
   }
@@ -164,15 +181,18 @@ function showFloatText(text, color) {
 // 結束遊戲
 function endGame() {
   isGameOver = true;
+  isPlaying = false;
   clearInterval(spawnInterval);
   clearInterval(timerInterval);
   bgMusic.pause(); bgMusic.currentTime = 0;
 
-  // 🔹 移除所有現有掉落物
+  // 移除所有掉落物
   document.querySelectorAll(".falling").forEach(obj => obj.remove());
 
-  pauseBtn.style.display = "none";
+  centerGameOver.style.display = "block";
+  gameBtn.textContent = "開始遊戲";
+
   gameOverScreen.style.display = "block";
-  finalScore.textContent = `⭐您的分數：${score}`;
-  finalTime.textContent = `⏳存活時間：${time} 秒`;
+  finalScore.textContent = `⭐您的分數：${formatNum(score)}`;
+  finalTime.textContent = `⏳存活時間：${formatNum(time)} 秒`;
 }
