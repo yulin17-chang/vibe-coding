@@ -48,13 +48,15 @@ h1 {
 }
 
 #sidebar {
+  font-family: monospace; /* 等寬字體，避免數字寬度不同導致偏移 */
   display: flex;
   flex-direction: column;
-  justify-content: center;   /* 垂直置中 */
+  justify-content: center;
   align-items: flex-start;
   font-size: 22px;
   line-height: 1.8;
   padding: 20px;
+  min-width: 160px; /* 🔹固定一個最小寬度，避免抖動 */
 }
 
 #sidebar p {
