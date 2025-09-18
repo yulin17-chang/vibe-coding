@@ -80,7 +80,7 @@ function startGame() {
   }, 1000);
 }
 
-// 暫停 / 繼續
+// === 暫停 / 繼續 ===
 function togglePause() {
   if (!isPlaying) {
     startGame();
@@ -89,13 +89,30 @@ function togglePause() {
   if (isGameOver) return;
 
   if (isPaused) {
+    // 繼續遊戲
     isPaused = false;
     gameBtn.textContent = "暫停遊戲";
+    centerGameOver.style.display = "none"; // 隱藏 STOP
     bgMusic.play();
+
+    // 重新啟動掉落物產生
+    spawnInterval = setInterval(() => {
+      if (!isPaused) spawnFallingObject();
+    }, 1000);
+
   } else {
+    // 暫停遊戲
     isPaused = true;
     gameBtn.textContent = "繼續遊戲";
     bgMusic.pause();
+
+    // 移除所有掉落物
+    document.querySelectorAll(".falling").forEach(obj => obj.remove());
+    clearInterval(spawnInterval);
+
+    // 顯示 STOP
+    centerGameOver.textContent = "STOP";
+    centerGameOver.style.display = "block";
   }
 }
 
@@ -178,7 +195,7 @@ function showFloatText(text, color) {
   setTimeout(() => float.remove(), 1000);
 }
 
-// 結束遊戲
+// === 結束遊戲 ===
 function endGame() {
   isGameOver = true;
   isPlaying = false;
@@ -189,9 +206,12 @@ function endGame() {
   // 移除所有掉落物
   document.querySelectorAll(".falling").forEach(obj => obj.remove());
 
+  // 顯示 GAME OVER
+  centerGameOver.textContent = "GAME OVER";
   centerGameOver.style.display = "block";
   gameBtn.textContent = "開始遊戲";
 
+  // 更新結果
   gameOverScreen.style.display = "block";
   finalScore.textContent = `⭐您的分數：${formatNum(score)}`;
   finalTime.textContent = `⏳存活時間：${formatNum(time)} 秒`;
